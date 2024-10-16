@@ -1,6 +1,8 @@
 package com.sportradar.football;
 
-import java.util.HashMap;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -11,7 +13,8 @@ public class LiveWorldCupScoreBoard {
     private final Map<Match, MatchScore> matches;
 
     public LiveWorldCupScoreBoard() {
-        this.matches = new HashMap<>();
+        // LinkedHashMap maintains insertion order
+        this.matches = new LinkedHashMap<>();
     }
 
     public void startMatch(Match match) {
@@ -38,7 +41,13 @@ public class LiveWorldCupScoreBoard {
 
     public List<MatchInfo> getSummary() {
         return matches.entrySet().stream()
-            .map(entry -> new MatchInfo(entry.getKey(), entry.getValue()))
-            .collect(Collectors.toList());
+        .map(entry -> new MatchInfo(entry.getKey(), entry.getValue()))
+        .collect(Collectors.collectingAndThen(Collectors.toList(), list -> {
+            // Reverse the list to have the most recently started matches first
+            Collections.reverse(list);
+            // Sort the list by total score in descending order
+            list.sort(Comparator.comparing(MatchInfo::totalScore).reversed());
+            return list;
+        }));
     }
 }

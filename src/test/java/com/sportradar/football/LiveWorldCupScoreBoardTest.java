@@ -75,19 +75,31 @@ public class LiveWorldCupScoreBoardTest {
     }
 
     @Test
-    void canGetSummaryOfMatches() {
+    void getSummaryReturnsMatchesInOrderOfTheirTotalScoreWithMostRecentlyStartedAtTheTop() {
+        Match matchGermanyFrance = new Match("Germany", "France");
+        Match matchUruguayItaly = new Match("Uruguay", "Italy");
+        Match matchArgentinaAustralia = new Match("Argentina", "Australia");
+
         scoreboard.startMatch(matchMexicoCanada);
         scoreboard.startMatch(matchSpainBrazil);
+        scoreboard.startMatch(matchGermanyFrance);
+        scoreboard.startMatch(matchUruguayItaly);
+        scoreboard.startMatch(matchArgentinaAustralia);
 
-        scoreboard.updateScore(matchMexicoCanada, new MatchScore(0, 1));
-        scoreboard.updateScore(matchSpainBrazil, new MatchScore(0, 1));
-        scoreboard.updateScore(matchMexicoCanada, new MatchScore(1, 1));
+        scoreboard.updateScore(matchMexicoCanada, new MatchScore(0, 5));
+        scoreboard.updateScore(matchSpainBrazil, new MatchScore(10, 2));
+        scoreboard.updateScore(matchGermanyFrance, new MatchScore(2, 2));
+        scoreboard.updateScore(matchUruguayItaly, new MatchScore(6, 6));
+        scoreboard.updateScore(matchArgentinaAustralia, new MatchScore(3, 1));
 
-        assertThat(scoreboard.getSummary())         
-            .hasSize(2)
+        assertThat(scoreboard.getSummary())
+            .hasSize(5)
             .containsExactly(
-                new MatchInfo(matchMexicoCanada, new MatchScore(1, 1)),
-                new MatchInfo(matchSpainBrazil, new MatchScore(0, 1))
+                new MatchInfo(matchUruguayItaly, new MatchScore(6, 6)),
+                new MatchInfo(matchSpainBrazil, new MatchScore(10, 2)),
+                new MatchInfo(matchMexicoCanada, new MatchScore(0, 5)),
+                new MatchInfo(matchArgentinaAustralia, new MatchScore(3, 1)),
+                new MatchInfo(matchGermanyFrance, new MatchScore(2, 2))
             );
     }
 }
