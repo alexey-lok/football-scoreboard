@@ -10,7 +10,7 @@ The following assumptions were made during the development of this library:
 2. **Match Team Names:** Team names must be non-null, non-empty, and distinct.
 3. **Score Updates:** Scores cannot be negative. The system only allows non-negative integers for updating the score. Score updates are not dependent on the current score for the match (i.e. they can reduce the current match score or increase it by arbitrary number, assumption being that there can be score corrections during the match).
 4. **Match Order in Summary:** The summary of ongoing matches is sorted primarily by the total score in descending order. If two matches have the same total score, the most recently started match appears first.
-5. **Error Handling:** Attempts to start an already ongoing match or update a non-existent match will result in an exception.
+5. **Error Handling:** Attempts to start an already ongoing match or update or finish a non-existent match will result in an exception.
 
 ## Classes and Methods
 - **`LiveWorldCupScoreBoard`**: The main class managing the matches and their scores.
