@@ -11,27 +11,15 @@ public class LiveWorldCupScoreBoard {
         this.matches = new HashSet<>();
     }
 
-    public void startMatch(String homeTeam, String awayTeam) {
-        if (homeTeam == null || awayTeam == null || homeTeam.isEmpty() || awayTeam.isEmpty()) {
-            throw new IllegalArgumentException("Team names cannot be null or empty");
-        }
-
-        if (homeTeam.equals(awayTeam)) {
-            throw new IllegalArgumentException("Home and away teams cannot be the same");
-        }
-
-        Match match = new Match(homeTeam, awayTeam);
+    public void startMatch(Match match) {
         if (matches.contains(match)) {
-            throw new IllegalStateException("Match " + homeTeam + "-" + awayTeam + " already started");
+            throw new IllegalStateException("Match " + match.homeTeam() + "-" + match.awayTeam() + " already started");
         }
         matches.add(match);
     }
 
     public MatchScore getMatchScore(String homeTeam, String awayTeam) {
         return new MatchScore(0, 0);
-    }
-
-    private record Match(String homeTeam, String awayTeam) {
     }
 
 }

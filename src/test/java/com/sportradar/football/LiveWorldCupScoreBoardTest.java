@@ -10,7 +10,7 @@ public class LiveWorldCupScoreBoardTest {
     @Test
     void canStartMatch() {
         LiveWorldCupScoreBoard scoreboard = new LiveWorldCupScoreBoard();
-        scoreboard.startMatch("Mexico", "Canada");
+        scoreboard.startMatch(new Match("Mexico", "Canada"));
     }
 
     @Test
@@ -18,13 +18,13 @@ public class LiveWorldCupScoreBoardTest {
         LiveWorldCupScoreBoard scoreboard = new LiveWorldCupScoreBoard();
         String expectedMessage = "Team names cannot be null or empty";
         assertThatThrownBy(() -> {
-            scoreboard.startMatch(null, null);
+            scoreboard.startMatch(new Match(null, null));
         })
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage(expectedMessage);
 
         assertThatThrownBy(() -> {
-            scoreboard.startMatch("", "");
+            scoreboard.startMatch(new Match("", ""));
         })
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage(expectedMessage);
@@ -35,7 +35,7 @@ public class LiveWorldCupScoreBoardTest {
         LiveWorldCupScoreBoard scoreboard = new LiveWorldCupScoreBoard();
         String expectedMessage = "Home and away teams cannot be the same";
         assertThatThrownBy(() -> {
-            scoreboard.startMatch("team", "team");
+            scoreboard.startMatch(new Match("team", "team"));
         })
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage(expectedMessage);
@@ -45,12 +45,12 @@ public class LiveWorldCupScoreBoardTest {
     void canNotStartTheSameMatchTwice() {
         LiveWorldCupScoreBoard scoreboard = new LiveWorldCupScoreBoard();
         
-        scoreboard.startMatch("Mexico", "Canada");
+        scoreboard.startMatch(new Match("Mexico", "Canada"));
         
         String expectedMessage = "Match Mexico-Canada already started";
         
         assertThatThrownBy(() -> {
-            scoreboard.startMatch("Mexico", "Canada");
+            scoreboard.startMatch(new Match("Mexico", "Canada"));
         })
         .isInstanceOf(IllegalStateException.class)
         .hasMessage(expectedMessage);
@@ -59,7 +59,7 @@ public class LiveWorldCupScoreBoardTest {
     @Test
     void matchStartsWithZeroScore() {
         LiveWorldCupScoreBoard scoreboard = new LiveWorldCupScoreBoard();
-        scoreboard.startMatch("Mexico", "Canada");
+        scoreboard.startMatch(new Match("Mexico", "Canada"));
 
         assertThat(scoreboard.getMatchScore("Mexico", "Canada"))
             .isEqualTo(new MatchScore(0, 0));
