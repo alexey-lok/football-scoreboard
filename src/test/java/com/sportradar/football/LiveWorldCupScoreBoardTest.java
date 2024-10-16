@@ -28,8 +28,8 @@ public class LiveWorldCupScoreBoardTest {
         assertThatThrownBy(() -> {
             scoreboard.startMatch(matchMexicoCanada);
         })
-        .isInstanceOf(IllegalStateException.class)
-        .hasMessage(expectedMessage);
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessage(expectedMessage);
     }
 
     @Test
@@ -61,8 +61,8 @@ public class LiveWorldCupScoreBoardTest {
         assertThatThrownBy(() -> {
             scoreboard.updateScore(matchMexicoCanada, new MatchScore(1, 0));
         })
-        .isInstanceOf(IllegalArgumentException.class)
-        .hasMessage(expectedMessage);
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage(expectedMessage);
     }
 
     @Test
@@ -72,6 +72,16 @@ public class LiveWorldCupScoreBoardTest {
 
         assertThat(scoreboard.getMatchScore(matchMexicoCanada))
             .isNotPresent();
+    }
+
+    @Test
+    void finishingNonExistingMatchThrowsIllegalArgumentException() {
+        String expectedMessage = "Match Mexico-Canada is not ongoing so can't be finished";
+        assertThatThrownBy(() -> {
+            scoreboard.finishMatch(matchMexicoCanada);
+        })
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage(expectedMessage);
     }
 
     @Test

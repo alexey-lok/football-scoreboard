@@ -32,6 +32,9 @@ public class LiveWorldCupScoreBoard {
     }
 
     public void finishMatch(Match match) {
+        if (!matches.containsKey(match)) {
+            throw new IllegalArgumentException("Match " + match.homeTeam() + "-" + match.awayTeam() + " is not ongoing so can't be finished");
+        }
         matches.remove(match);
     }
 
