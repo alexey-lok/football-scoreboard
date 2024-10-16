@@ -66,6 +66,15 @@ public class LiveWorldCupScoreBoardTest {
     }
 
     @Test
+    void finishingOngoingMatchRemovesItFromScoreboard() {
+        scoreboard.startMatch(matchMexicoCanada);
+        scoreboard.finishMatch(matchMexicoCanada);
+
+        assertThat(scoreboard.getMatchScore(matchMexicoCanada))
+            .isNotPresent();
+    }
+
+    @Test
     void canGetSummaryOfMatches() {
         scoreboard.startMatch(matchMexicoCanada);
         scoreboard.startMatch(matchSpainBrazil);

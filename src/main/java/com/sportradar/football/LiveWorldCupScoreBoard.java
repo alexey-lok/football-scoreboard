@@ -28,6 +28,10 @@ public class LiveWorldCupScoreBoard {
         matches.put(match, score);
     }
 
+    public void finishMatch(Match match) {
+        matches.remove(match);
+    }
+
     public Optional<MatchScore> getMatchScore(Match match) {
         return Optional.ofNullable(matches.get(match));
     }
