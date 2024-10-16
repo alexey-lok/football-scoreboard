@@ -27,7 +27,11 @@ public class LiveWorldCupScoreBoard {
         matches.add(match);
     }
 
-    private record Match(String homeTeam, String awayTeam) {        
+    public MatchScore getMatchScore(String homeTeam, String awayTeam) {
+        return new MatchScore(0, 0);
+    }
+
+    private record Match(String homeTeam, String awayTeam) {
     }
 
 }

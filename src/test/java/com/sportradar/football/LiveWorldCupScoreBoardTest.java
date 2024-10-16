@@ -3,6 +3,7 @@ package com.sportradar.football;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class LiveWorldCupScoreBoardTest {
     
@@ -53,5 +54,14 @@ public class LiveWorldCupScoreBoardTest {
         })
         .isInstanceOf(IllegalStateException.class)
         .hasMessage(expectedMessage);
+    }
+
+    @Test
+    void matchStartsWithZeroScore() {
+        LiveWorldCupScoreBoard scoreboard = new LiveWorldCupScoreBoard();
+        scoreboard.startMatch("Mexico", "Canada");
+
+        assertThat(scoreboard.getMatchScore("Mexico", "Canada"))
+            .isEqualTo(new MatchScore(0, 0));
     }
 }
