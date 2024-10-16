@@ -37,7 +37,13 @@ public class LiveWorldCupScoreBoardTest {
         scoreboard.startMatch(matchMexicoCanada);
 
         assertThat(scoreboard.getMatchScore(matchMexicoCanada))
-            .isEqualTo(new MatchScore(0, 0));
+            .hasValue(new MatchScore(0, 0));
+    }
+
+    @Test
+    void matchScoreForNonExistingMatchIsEmpty() {
+        assertThat(scoreboard.getMatchScore(matchMexicoCanada))
+            .isNotPresent();
     }
 
     @Test
@@ -46,7 +52,7 @@ public class LiveWorldCupScoreBoardTest {
         scoreboard.updateScore(matchMexicoCanada, new MatchScore(1, 0));
 
         assertThat(scoreboard.getMatchScore(matchMexicoCanada))
-            .isEqualTo(new MatchScore(1, 0));
+            .hasValue(new MatchScore(1, 0));
     }
 
     @Test

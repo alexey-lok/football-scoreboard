@@ -3,6 +3,7 @@ package com.sportradar.football;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class LiveWorldCupScoreBoard {
@@ -27,8 +28,8 @@ public class LiveWorldCupScoreBoard {
         matches.put(match, score);
     }
 
-    public MatchScore getMatchScore(Match match) {
-        return matches.get(match);
+    public Optional<MatchScore> getMatchScore(Match match) {
+        return Optional.ofNullable(matches.get(match));
     }
 
     public List<MatchInfo> getSummary() {
