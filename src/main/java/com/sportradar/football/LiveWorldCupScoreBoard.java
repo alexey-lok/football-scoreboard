@@ -19,6 +19,9 @@ public class LiveWorldCupScoreBoard {
     }
 
     public void updateScore(Match match, MatchScore score) {
+        if (!matches.containsKey(match)) {
+            throw new IllegalArgumentException("Match " + match.homeTeam() + "-" + match.awayTeam() + " has not started");
+        }
         matches.put(match, score);
     }
 

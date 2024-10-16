@@ -76,5 +76,16 @@ public class LiveWorldCupScoreBoardTest {
         assertThat(scoreboard.getMatchScore(match))
             .isEqualTo(new MatchScore(1, 0));
     }
-    
+
+    @Test
+    void canNotUpdateScoreOfMatchThatHasNotStarted() {
+        LiveWorldCupScoreBoard scoreboard = new LiveWorldCupScoreBoard();
+        Match match = new Match("Mexico", "Canada");
+        String expectedMessage = "Match Mexico-Canada has not started";
+        assertThatThrownBy(() -> {
+            scoreboard.updateScore(match, new MatchScore(1, 0));
+        })
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage(expectedMessage);
+    }
 }
