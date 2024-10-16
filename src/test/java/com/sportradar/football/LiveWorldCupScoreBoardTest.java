@@ -1,6 +1,7 @@
 package com.sportradar.football;
 
 import org.junit.jupiter.api.Test;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -87,5 +88,28 @@ public class LiveWorldCupScoreBoardTest {
         })
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage(expectedMessage);
+    }
+
+    @Test
+    void canGetSummaryOfMatches() {
+        LiveWorldCupScoreBoard scoreboard = new LiveWorldCupScoreBoard();
+        Match match1 = new Match("Mexico", "Canada");
+        Match match2 = new Match("Spain", "Brazil");
+
+        scoreboard.startMatch(match1);
+        scoreboard.startMatch(match2);
+
+        scoreboard.updateScore(match1, new MatchScore(0, 1));
+        scoreboard.updateScore(match2, new MatchScore(1, 0));
+        scoreboard.updateScore(match2, new MatchScore(1, 1));
+
+        List<MatchInfo> summary = scoreboard.getSummary();
+
+        assertThat(summary)         
+            .hasSize(2)
+            .contains(
+                new MatchInfo(match1, new MatchScore(0, 1)),
+                new MatchInfo(match2, new MatchScore(1, 1))
+            );  
     }
 }

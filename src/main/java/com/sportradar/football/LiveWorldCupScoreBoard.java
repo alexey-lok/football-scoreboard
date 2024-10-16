@@ -1,7 +1,9 @@
 package com.sportradar.football;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class LiveWorldCupScoreBoard {
 
@@ -27,5 +29,11 @@ public class LiveWorldCupScoreBoard {
 
     public MatchScore getMatchScore(Match match) {
         return matches.get(match);
+    }
+
+    public List<MatchInfo> getSummary() {
+        return matches.entrySet().stream()
+            .map(entry -> new MatchInfo(entry.getKey(), entry.getValue()))
+            .collect(Collectors.toList());
     }
 }
