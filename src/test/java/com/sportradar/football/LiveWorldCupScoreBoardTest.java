@@ -59,9 +59,22 @@ public class LiveWorldCupScoreBoardTest {
     @Test
     void matchStartsWithZeroScore() {
         LiveWorldCupScoreBoard scoreboard = new LiveWorldCupScoreBoard();
-        scoreboard.startMatch(new Match("Mexico", "Canada"));
+        Match match = new Match("Mexico", "Canada");
+        scoreboard.startMatch(match);
 
-        assertThat(scoreboard.getMatchScore("Mexico", "Canada"))
+        assertThat(scoreboard.getMatchScore(match))
             .isEqualTo(new MatchScore(0, 0));
     }
+
+    @Test
+    void canUpdateScoreOfOngoingMatch() {
+        LiveWorldCupScoreBoard scoreboard = new LiveWorldCupScoreBoard();
+        Match match = new Match("Mexico", "Canada");
+        scoreboard.startMatch(match);
+        scoreboard.updateScore(match, new MatchScore(1, 0));
+
+        assertThat(scoreboard.getMatchScore(match))
+            .isEqualTo(new MatchScore(1, 0));
+    }
+    
 }

@@ -1,25 +1,28 @@
 package com.sportradar.football;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LiveWorldCupScoreBoard {
 
-    private final Set<Match> matches;
+    private final Map<Match, MatchScore> matches;
 
     public LiveWorldCupScoreBoard() {
-        this.matches = new HashSet<>();
+        this.matches = new HashMap<>();
     }
 
     public void startMatch(Match match) {
-        if (matches.contains(match)) {
+        if (matches.containsKey(match)) {
             throw new IllegalStateException("Match " + match.homeTeam() + "-" + match.awayTeam() + " already started");
         }
-        matches.add(match);
+        matches.put(match, new MatchScore(0, 0));
     }
 
-    public MatchScore getMatchScore(String homeTeam, String awayTeam) {
-        return new MatchScore(0, 0);
+    public void updateScore(Match match, MatchScore score) {
+        matches.put(match, score);
     }
 
+    public MatchScore getMatchScore(Match match) {
+        return matches.get(match);
+    }
 }
