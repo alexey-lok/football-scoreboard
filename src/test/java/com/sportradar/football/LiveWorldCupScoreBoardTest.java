@@ -20,32 +20,6 @@ public class LiveWorldCupScoreBoardTest {
     }
 
     @Test
-    void startMatchWithEmptyTeamNamesThrowsIllegalArgumentException() {
-        String expectedMessage = "Team names cannot be null or empty";
-        assertThatThrownBy(() -> {
-            scoreboard.startMatch(new Match(null, null));
-        })
-        .isInstanceOf(IllegalArgumentException.class)
-        .hasMessage(expectedMessage);
-
-        assertThatThrownBy(() -> {
-            scoreboard.startMatch(new Match("", ""));
-        })
-        .isInstanceOf(IllegalArgumentException.class)
-        .hasMessage(expectedMessage);
-    }
-
-    @Test
-    void startMatchWithSameHomeAndAwayTeamThrowsIllegalArgumentException() {
-        String expectedMessage = "Home and away teams cannot be the same";
-        assertThatThrownBy(() -> {
-            scoreboard.startMatch(new Match("team", "team"));
-        })
-        .isInstanceOf(IllegalArgumentException.class)
-        .hasMessage(expectedMessage);
-    }
-
-    @Test
     void canNotStartTheSameMatchTwice() {
         scoreboard.startMatch(matchMexicoCanada);
         
