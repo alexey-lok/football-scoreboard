@@ -1,22 +1,26 @@
 package com.sportradar.football;
 
-import org.junit.jupiter.api.Test;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class LiveWorldCupScoreBoardTest {
-    
-    @Test
-    void canStartMatch() {
-        LiveWorldCupScoreBoard scoreboard = new LiveWorldCupScoreBoard();
-        scoreboard.startMatch(new Match("Mexico", "Canada"));
+
+    private LiveWorldCupScoreBoard scoreboard;
+    private Match matchMexicoCanada;
+    private Match matchSpainBrazil;
+
+    @BeforeEach
+    void setUp() {
+        scoreboard = new LiveWorldCupScoreBoard();
+        matchMexicoCanada = new Match("Mexico", "Canada");
+        matchSpainBrazil = new Match("Spain", "Brazil");
     }
 
     @Test
     void startMatchWithEmptyTeamNamesThrowsIllegalArgumentException() {
-        LiveWorldCupScoreBoard scoreboard = new LiveWorldCupScoreBoard();
         String expectedMessage = "Team names cannot be null or empty";
         assertThatThrownBy(() -> {
             scoreboard.startMatch(new Match(null, null));
@@ -33,7 +37,6 @@ public class LiveWorldCupScoreBoardTest {
 
     @Test
     void startMatchWithSameHomeAndAwayTeamThrowsIllegalArgumentException() {
-        LiveWorldCupScoreBoard scoreboard = new LiveWorldCupScoreBoard();
         String expectedMessage = "Home and away teams cannot be the same";
         assertThatThrownBy(() -> {
             scoreboard.startMatch(new Match("team", "team"));
@@ -44,14 +47,12 @@ public class LiveWorldCupScoreBoardTest {
 
     @Test
     void canNotStartTheSameMatchTwice() {
-        LiveWorldCupScoreBoard scoreboard = new LiveWorldCupScoreBoard();
-        
-        scoreboard.startMatch(new Match("Mexico", "Canada"));
+        scoreboard.startMatch(matchMexicoCanada);
         
         String expectedMessage = "Match Mexico-Canada already started";
         
         assertThatThrownBy(() -> {
-            scoreboard.startMatch(new Match("Mexico", "Canada"));
+            scoreboard.startMatch(matchMexicoCanada);
         })
         .isInstanceOf(IllegalStateException.class)
         .hasMessage(expectedMessage);
@@ -59,32 +60,26 @@ public class LiveWorldCupScoreBoardTest {
 
     @Test
     void matchStartsWithZeroScore() {
-        LiveWorldCupScoreBoard scoreboard = new LiveWorldCupScoreBoard();
-        Match match = new Match("Mexico", "Canada");
-        scoreboard.startMatch(match);
+        scoreboard.startMatch(matchMexicoCanada);
 
-        assertThat(scoreboard.getMatchScore(match))
+        assertThat(scoreboard.getMatchScore(matchMexicoCanada))
             .isEqualTo(new MatchScore(0, 0));
     }
 
     @Test
     void canUpdateScoreOfOngoingMatch() {
-        LiveWorldCupScoreBoard scoreboard = new LiveWorldCupScoreBoard();
-        Match match = new Match("Mexico", "Canada");
-        scoreboard.startMatch(match);
-        scoreboard.updateScore(match, new MatchScore(1, 0));
+        scoreboard.startMatch(matchMexicoCanada);
+        scoreboard.updateScore(matchMexicoCanada, new MatchScore(1, 0));
 
-        assertThat(scoreboard.getMatchScore(match))
+        assertThat(scoreboard.getMatchScore(matchMexicoCanada))
             .isEqualTo(new MatchScore(1, 0));
     }
 
     @Test
     void canNotUpdateScoreOfMatchThatHasNotStarted() {
-        LiveWorldCupScoreBoard scoreboard = new LiveWorldCupScoreBoard();
-        Match match = new Match("Mexico", "Canada");
         String expectedMessage = "Match Mexico-Canada has not started";
         assertThatThrownBy(() -> {
-            scoreboard.updateScore(match, new MatchScore(1, 0));
+            scoreboard.updateScore(matchMexicoCanada, new MatchScore(1, 0));
         })
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage(expectedMessage);
@@ -92,24 +87,18 @@ public class LiveWorldCupScoreBoardTest {
 
     @Test
     void canGetSummaryOfMatches() {
-        LiveWorldCupScoreBoard scoreboard = new LiveWorldCupScoreBoard();
-        Match match1 = new Match("Mexico", "Canada");
-        Match match2 = new Match("Spain", "Brazil");
+        scoreboard.startMatch(matchMexicoCanada);
+        scoreboard.startMatch(matchSpainBrazil);
 
-        scoreboard.startMatch(match1);
-        scoreboard.startMatch(match2);
+        scoreboard.updateScore(matchMexicoCanada, new MatchScore(0, 1));
+        scoreboard.updateScore(matchSpainBrazil, new MatchScore(0, 1));
+        scoreboard.updateScore(matchMexicoCanada, new MatchScore(1, 1));
 
-        scoreboard.updateScore(match1, new MatchScore(0, 1));
-        scoreboard.updateScore(match2, new MatchScore(1, 0));
-        scoreboard.updateScore(match2, new MatchScore(1, 1));
-
-        List<MatchInfo> summary = scoreboard.getSummary();
-
-        assertThat(summary)         
+        assertThat(scoreboard.getSummary())         
             .hasSize(2)
-            .contains(
-                new MatchInfo(match1, new MatchScore(0, 1)),
-                new MatchInfo(match2, new MatchScore(1, 1))
-            );  
+            .containsExactly(
+                new MatchInfo(matchMexicoCanada, new MatchScore(1, 1)),
+                new MatchInfo(matchSpainBrazil, new MatchScore(0, 1))
+            );
     }
 }
