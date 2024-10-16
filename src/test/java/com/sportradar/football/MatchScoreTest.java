@@ -11,5 +11,9 @@ public class MatchScoreTest {
         assertThatThrownBy(() -> new MatchScore(-1, 0))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("Score cannot be negative");
+
+        assertThatThrownBy(() -> new MatchScore(0, -1))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Score cannot be negative");
     }   
 }
