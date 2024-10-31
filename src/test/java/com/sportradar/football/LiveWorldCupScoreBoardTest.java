@@ -85,6 +85,15 @@ public class LiveWorldCupScoreBoardTest {
     }
 
     @Test
+    void canGetMatchScoreForTheHomeTeam() {
+        scoreboard.startMatch(matchMexicoCanada);
+        scoreboard.updateScore(matchMexicoCanada, new MatchScore(5, 2));
+
+        assertThat(scoreboard.getScoreForTeam("Mexico")).hasValue(5);
+        assertThat(scoreboard.getScoreForTeam("Canada")).hasValue(2);
+    }
+
+    @Test
     void getSummaryReturnsMatchesInOrderOfTheirTotalScoreWithMostRecentlyStartedAtTheTop() {
         Match matchGermanyFrance = new Match("Germany", "France");
         Match matchUruguayItaly = new Match("Uruguay", "Italy");

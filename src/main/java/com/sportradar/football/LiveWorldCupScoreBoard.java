@@ -53,4 +53,16 @@ public class LiveWorldCupScoreBoard {
             return list;
         }));
     }
+
+    public Optional<Integer> getScoreForTeam(String team) {
+        return matches.entrySet().stream().filter(entry -> {
+            Match match = entry.getKey();
+            return match.homeTeam().equals(team) || match.awayTeam().equals(team);
+        }).findFirst().map(value -> {
+            Match match = value.getKey();
+            MatchScore matchScore = value.getValue();
+
+            return match.homeTeam().equals(team) ? matchScore.homeTeamScore() : matchScore.awayTeamScore();
+        });
+    }
 }
